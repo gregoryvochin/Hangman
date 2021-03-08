@@ -1,0 +1,3 @@
+import Hangman
+
+Hangman.hangman()

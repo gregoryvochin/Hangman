@@ -1,42 +1,105 @@
 import random
 
-word_list = ["aardvark", "baboon", "camel"]
-word = word_list[random.randrange(0, len(word_list))]
-#could have used random.choice(word_list) instead
+def hangman():
+    
+    gallows = ['''
+  +---+
+  |   |
+  O   |
+ /|\  |
+ / \  |
+      |
+=========
+''', '''
+  +---+
+  |   |
+  O   |
+ /|\  |
+ /    |
+      |
+=========
+''', '''
+  +---+
+  |   |
+  O   |
+ /|\  |
+      |
+      |
+=========
+''', '''
+  +---+
+  |   |
+  O   |
+ /|   |
+      |
+      |
+=========''', '''
+  +---+
+  |   |
+  O   |
+  |   |
+      |
+      |
+=========
+''', '''
+  +---+
+  |   |
+  O   |
+      |
+      |
+      |
+=========
+''', '''
+  +---+
+  |   |
+      |
+      |
+      |
+      |
+=========
+''']
 
-guess_list = []
-for letter in word:
-    guess_list.append(letter)
+    word_list = ["aardvark", "baboon", "camel"]
+    word = word_list[random.randrange(0, len(word_list))]
+    #could have used random.choice(word_list) instead
 
-lives = 5
-display = []
+    guess_list = []
+    for letter in word:
+        guess_list.append(letter)
 
-for x in range(0, len(guess_list)):
-    display.append("_")
+    lives = 6
+    display = []
 
-while lives > 0:
-    guess = ""
-    while len(guess) == 0 or len(guess) > 1:
-        guess = input("Guess a letter in the word: ")
-        if len(guess) > 1:
-            print("Please enter only one letter.")
-        guess = guess.lower()
-    print(f"You guessed: {guess}")
+    for x in range(0, len(guess_list)):
+        display.append("_")
 
-    if guess in display:
-        print("you have already guessed this.")
+    while lives > 0:
+        guess = ""
+        while len(guess) == 0 or len(guess) > 1:
+            guess = input("Guess a letter in the word: ")
+            if len(guess) > 1:
+                print("Please enter only one letter.")
+            guess = guess.lower()
+        print(f"You guessed: {guess}")
 
-    for i in range(0, len(guess_list)):
-        if guess == guess_list[i]:
-            display[i] = guess
-            
-    if guess not in guess_list:
-        lives -= 1
-        print(f"you have {lives} lives left.")
-            
-    print(display)
+        if guess in display:
+            print("you have already guessed this.")
 
-    if "_" not in display:
-        print("you win")
-        break
+        for i in range(0, len(guess_list)):
+            if guess == guess_list[i]:
+                display[i] = guess
+                
+        if guess not in guess_list:
+            lives -= 1
+            print(f"you have {lives} lives left.")
+        
+        print(*display)
+        print(gallows[lives])
+
+        if "_" not in display:
+            print("you win")
+            break
+
+    if lives == 0:
+        print("you lose. game over.")
         
