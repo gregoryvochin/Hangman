@@ -27,15 +27,13 @@ def hangman():
         guess = ""  #initialize guess string
         while len(guess) == 0 or len(guess) > 1 or guess.isalpha() == False:  #data validation
             guess = input("Guess a letter in the word: ")  #user input
-
+            
             if len(guess) > 1:  #data validatoin for multiple characters
                 print("Please enter only one letter.")
             if guess.isalpha() == False:  #data validation for non-letter characters
                 print("Please enter only letters.")
                 
             guess = guess.lower()  #cast guess to lower case for comparison to word bank
-            
-        #print(f"you guessed: {guess}")
 
         if guess not in guess_list and guess not in guesses:  #discover incorrect guesses
             lives -= 1
