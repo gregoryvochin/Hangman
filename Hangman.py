@@ -4,6 +4,9 @@ import HangmanArt
 
 def hangman():
 
+    print("Welcome to...")
+    print(HangmanArt.title)
+    
     lives = 6
     display = []
     guesses = []
@@ -30,29 +33,37 @@ def hangman():
             if guess.isalpha() == False:  #data validation for non-letter characters
                 print("Please enter only letters.")
                 
-            guess = guess.lower()
-            if guess in guesses:
-                print("you have already guessed this.")
-            guesses.append(guess)
-        print(f"You guessed: {guess}")
+            guess = guess.lower()  #cast guess to lower case for comparison to word bank
+            
+        #print(f"you guessed: {guess}")
 
-        for i in range(0, len(guess_list)):
+        if guess not in guess_list and guess not in guesses:  #discover incorrect guesses
+            lives -= 1
+            print("your guess was incorrect.")
+        elif guess in guess_list and guess in guesses:  #remind user of double guesses
+            print("you have already guessed this correctly.")
+        elif guess in guesses:  #prevent incorrect double guesses from causing a penalty
+            print("you have already guessed this incorrectly.")
+                
+        if guess not in guesses:
+            guesses.append(guess)  #add guess to list of letters guessed
+        
+        print("you have guessed the letters: ", end="")  #display previous guesses for the user
+        print(*guesses)
+        
+        for i in range(0, len(guess_list)):  #replace chosen word blanks with correct guess
             if guess == guess_list[i]:
                 display[i] = guess
                 
-        if guess not in guess_list:
-            lives -= 1
-            print("your guess was incorrect.")
-            print(f"you have {lives} lives left.")
+        print(*display)  #print current guess state without any commas, quotations, or square brackets
+        print(HangmanArt.gallows[lives])  #display gallows stage based on number of lives
+        print(f"you have {lives} lives left.") #display number of lives left
         
-        print(*display)
-        print(HangmanArt.gallows[lives])
-
-        if "_" not in display:
+        if "_" not in display:  #if threre are no blanks left to fill, user wins
             print("you win")
-            break
+            break  
 
-    if lives == 0:
+    if lives == 0:  #if lives fall to zero, user loses
         print("you lose. game over.")
         print(f"your word was {word}")
         
