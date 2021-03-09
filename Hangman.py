@@ -1,89 +1,40 @@
 import random
+import HangmanWords
+import HangmanArt
 
 def hangman():
-    
-    gallows = ['''
-  +---+
-  |   |
-  O   |
- /|\  |
- / \  |
-      |
-=========
-''', '''
-  +---+
-  |   |
-  O   |
- /|\  |
- /    |
-      |
-=========
-''', '''
-  +---+
-  |   |
-  O   |
- /|\  |
-      |
-      |
-=========
-''', '''
-  +---+
-  |   |
-  O   |
- /|   |
-      |
-      |
-=========''', '''
-  +---+
-  |   |
-  O   |
-  |   |
-      |
-      |
-=========
-''', '''
-  +---+
-  |   |
-  O   |
-      |
-      |
-      |
-=========
-''', '''
-  +---+
-  |   |
-      |
-      |
-      |
-      |
-=========
-''']
 
-    word_list = ["aardvark", "baboon", "camel"]
-    word = word_list[random.randrange(0, len(word_list))]
-    #could have used random.choice(word_list) instead
+    lives = 6
+    display = []
+    guesses = []
+    word_list = HangmanWords.word_list
+    word = word_list[random.randrange(0, len(word_list))]  #could have used random.choice(word_list) instead
 
+    #parse chosen word into a list of characters
     guess_list = []
     for letter in word:
         guess_list.append(letter)
 
-    lives = 6
-    display = []
-
-    for x in range(0, len(guess_list)):
+    #fill display list with blanks the same length as the chosen word
+    for characters in range(0, len(guess_list)):
         display.append("_")
 
+    #run while loop for letter guesses until the users lives reach 0
     while lives > 0:
-        guess = ""
-        while len(guess) == 0 or len(guess) > 1:
-            guess = input("Guess a letter in the word: ")
-            if len(guess) > 1:
-                print("Please enter only one letter.")
-            guess = guess.lower()
-        print(f"You guessed: {guess}")
+        guess = ""  #initialize guess string
+        while len(guess) == 0 or len(guess) > 1 or guess.isalpha() == False:  #data validation
+            guess = input("Guess a letter in the word: ")  #user input
 
-        if guess in display:
-            print("you have already guessed this.")
+            if len(guess) > 1:  #data validatoin for multiple characters
+                print("Please enter only one letter.")
+            if guess.isalpha() == False:  #data validation for non-letter characters
+                print("Please enter only letters.")
+                
+            guess = guess.lower()
+            if guess in guesses:
+                print("you have already guessed this.")
+            guesses.append(guess)
+        print(f"You guessed: {guess}")
 
         for i in range(0, len(guess_list)):
             if guess == guess_list[i]:
@@ -91,10 +42,11 @@ def hangman():
                 
         if guess not in guess_list:
             lives -= 1
+            print("your guess was incorrect.")
             print(f"you have {lives} lives left.")
         
         print(*display)
-        print(gallows[lives])
+        print(HangmanArt.gallows[lives])
 
         if "_" not in display:
             print("you win")
@@ -102,4 +54,5 @@ def hangman():
 
     if lives == 0:
         print("you lose. game over.")
+        print(f"your word was {word}")
         
